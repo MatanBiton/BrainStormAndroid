@@ -5,24 +5,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Chronometer;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 public class SplashScreen extends AppCompatActivity {
 
     private long startTime, endTime;
 
+    private Requests requests;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_screen);
+
+        //initialize requests queue
+        requests = new Requests(this);
 
         //verifying that the device has all of the needed permissions
         new Permission(this).verifyPermissions();
@@ -53,7 +54,8 @@ public class SplashScreen extends AppCompatActivity {
             super.run();
 
             //starting to test the connection using an interface on callback with the answer
-            Requests.TestConnection(context, new RequestsResultListener<Boolean>() {
+
+            requests.TestConnection(new RequestsResultListener<Boolean>() {
                 @Override
                 public void getResult(Boolean result) {
                     if (result) {
@@ -63,7 +65,7 @@ public class SplashScreen extends AppCompatActivity {
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                startActivity(new Intent(context, FirstPage.class));
+                                startActivity(new Intent(context, Login.class));
                                 finish();
                             }
                         }, deltaTime < 3000 ? 3000 - deltaTime : 0);

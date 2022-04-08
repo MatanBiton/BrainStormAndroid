@@ -23,7 +23,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
         <activity
-            android:name=".FirstPage"
+            android:name=".Login"
             android:exported="false" />
         <activity
             android:name=".SplashScreen"
