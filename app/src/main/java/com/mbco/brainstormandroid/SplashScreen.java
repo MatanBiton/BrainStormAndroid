@@ -23,7 +23,7 @@ public class SplashScreen extends AppCompatActivity {
         setContentView(R.layout.splash_screen);
 
         //initialize requests queue
-        requests = new Requests(this);
+        requests = Requests.getInstance(this);
 
         //verifying that the device has all of the needed permissions
         new Permission(this).verifyPermissions();

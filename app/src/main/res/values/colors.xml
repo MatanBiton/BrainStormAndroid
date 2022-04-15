@@ -1,10 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="YaleBlue">#184E77</color>
+    <color name="LapisLazuli">#1E6091</color>
+    <color name="BlueMunsell">#168AAD</color>
+    <color name="ViridianGreen">#34A0A4</color>
+    <color name="Keppel">#52B69A</color>
+    <color name="OceanGreen">#76C893</color>
+    <color name="GrannySmithApple">#99D98C</color>
+    <color name="YellowGreenCrayon">#B5E48C</color>
+    <color name="KeyLime">#D9ED92</color>
+
+    <color name="MaximumYellow">#FFFF3F</color>
+    <color name="AndroidGreen">#AACC00</color>
+    <color name="SpanishVirdian">#007F5F</color>
+
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="gray">#C7D5DD</color>
+    <color name="grayblue">#A5BDCA</color>
+    <color name="darkergray">#cfd8dc</color>
+    <color name="darkblue">#0D2237</color>
+    <color name="brightgray">#EDF1F4</color>
+    <color name="brightblue">#5DADEC</color>
+    <color name="brighterblue">#2E4760</color>
+
+    <color name="grayish">#AEAEAE</color>
+    <color name="brown">#BB8F6A</color>
+    <color name="pink">#D8757A</color>
+    <color name="very_garyish">#7D7D7D</color>
+    <color name="almost_white">#E0E0E0</color>
+    <color name="extremely_gray">#515151</color>
+    <color name="light_extremely_gray">#6C6C6C</color>
+    <color name="kinda_gray">#797979</color>
+    <color name="sort_of_light_gray">#DBDBDB</color>
+    <color name="very_white">#FAFAFA</color>
+    <color name="very_almost_white">#F1F1F1</color>
 </resources>
