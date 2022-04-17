@@ -11,7 +11,9 @@ import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -23,6 +25,7 @@ import android.widget.Toast;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -35,9 +38,9 @@ public class Register extends AppCompatActivity {
     private TextView txtLogin;
 
     private EditText editEmail, editPassword, editFullName,
-             editID, editAddress, editPhone;
+             editID, editAddress, editPhone, editCertification, editExperience;
 
-    private Button btnDate, btnType, btnRegister;
+    private Button btnDate, btnType, btnRegister, btnStudent, btnTeacher;
 
     private CircleImageView editPhoto;
 
@@ -45,16 +48,30 @@ public class Register extends AppCompatActivity {
 
     private Bitmap photoBit;
 
+    private LayoutInflater inflater;
+
     private DatePickerDialog datePickerDialog;
 
     private final Requests request = Requests.getInstance();
+
+    private boolean student;
+
+    private View UserTypeView;
+
+    private AlertDialog userTypeDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        inflater = getLayoutInflater();
+
+        initializeUserTypeDialog();
+
         ConnectWidgets();
+
+        InitializeSpinners();
 
         txtLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,7 +120,29 @@ public class Register extends AppCompatActivity {
         btnType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                userTypeDialog.show();
+            }
+        });
+
+        btnStudent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                student = true;
+                editCertification.setEnabled(false);
+                editExperience.setEnabled(false);
+                btnStudent.setBackgroundColor(getResources().getColor(R.color.brightblue, getTheme()));
+                btnTeacher.setBackgroundColor(getResources().getColor(R.color.black, getTheme()));
+            }
+        });
+
+        btnTeacher.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                student = false;
+                editCertification.setEnabled(true);
+                editExperience.setEnabled(true);
+                btnStudent.setBackgroundColor(getResources().getColor(R.color.black, getTheme()));
+                btnTeacher.setBackgroundColor(getResources().getColor(R.color.brightblue, getTheme()));
             }
         });
     }
@@ -139,8 +178,12 @@ public class Register extends AppCompatActivity {
         String month = String.valueOf(datePickerDialog.getDatePicker().getMonth());
         String day = String.valueOf(datePickerDialog.getDatePicker().getDayOfMonth());
         String date = day + "/" + month + "/" + year;
-        String userType = "";
-        return new User("", id, email, password, firstName, lastName, photoBit, address, city, phone, date, userType);
+        String userType = student ? "student" : "teacher";
+        String certification = !student ? editCertification.getText().toString() : "";
+        int experience = !student ? Integer.parseInt(editExperience.getText().toString()) : -1;
+        User user =  new User("", id, email, password, firstName, lastName, photoBit, address, city, phone, date, userType);
+        return student ? user : new Teacher(user, certification, experience);
+
     }
 
     public void ConnectWidgets(){
@@ -157,8 +200,36 @@ public class Register extends AppCompatActivity {
         btnRegister = findViewById(R.id.btnRegister);
         btnType = findViewById(R.id.btnType);
         btnDate = findViewById(R.id.btnDate);
+        btnStudent = UserTypeView.findViewById(R.id.btnStudent);
+        btnTeacher = UserTypeView.findViewById(R.id.btnTeacher);
+        editCertification = UserTypeView.findViewById(R.id.editCertification);
+        editExperience = UserTypeView.findViewById(R.id.editExperience);
     }
 
+    public void InitializeSpinners(){
+        ArrayList<String> Phones = new ArrayList<>();
+        Phones.add("050");
+        Phones.add("051");
+        Phones.add("052");
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context, R.layout.reg_spinner_item, Phones);
+        spinnerPhone.setAdapter(arrayAdapter);
+
+
+        ArrayList<String> cities = new ArrayList<>();
+        cities.add("Select Your City");
+        cities.add("Ramat gan");
+        cities.add("Tel Aviv");
+        arrayAdapter = new ArrayAdapter<>(context, R.layout.reg_spinner_item, cities);
+        spinnerCity.setAdapter(arrayAdapter);
+    }
+
+
+    public void initializeUserTypeDialog(){
+        UserTypeView = inflater.inflate(R.layout.user_type_menu, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setView(UserTypeView);
+        userTypeDialog = builder.create();
+    }
     public class RegisterThread extends Thread{
 
         private final User user;

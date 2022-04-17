@@ -18,7 +18,7 @@ import java.util.StringJoiner;
 public class Requests {
 
     //base url for the api
-    private final static String BASE_URL = "http://192.168.1.202:5000/";
+    private final static String BASE_URL = "http://192.168.10.116:5000/";
     private static Requests instance;
     private static RequestQueue queue;
 
@@ -80,7 +80,7 @@ public class Requests {
     public void Register(User user, RequestsResultListener<User> listener) throws JSONException {
         String url = BASE_URL + "register";
         JSONObject body = user.getJSONObject();
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, url, body, new Response.Listener<JSONObject>() {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, body, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {

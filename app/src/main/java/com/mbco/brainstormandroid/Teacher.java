@@ -26,6 +26,14 @@ public class Teacher extends User{
         rating = -1;
         approval = 0;
     }
+
+    public Teacher(User user, String certification, int experience){
+        super(user);
+        this.certification = certification;
+        this.experience = experience;
+        this.rating = -1;
+        this.approval = 0;
+    }
     public Teacher(JSONObject jsonObject) throws JSONException {
         super(jsonObject);
         this.certification = jsonObject.getString("certification");
