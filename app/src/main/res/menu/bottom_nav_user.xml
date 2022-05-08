@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/profile_nav"
+        android:title="Profile"
+        android:icon="@drawable/ic_baseline_person_24"/>
+
+    <item
+        android:id="@+id/courses_nav"
+        android:title="courses"
+        android:icon="@drawable/ic_baseline_class_24"/>
+
+    <item
+        android:id="@+id/search_nav"
+        android:title="search"
+        android:icon="@drawable/ic_baseline_search"/>
+
+    <item
+        android:id="@+id/logout_nav"
+        android:title="Log Out"
+        android:icon="@drawable/ic_baseline_exit_to_app"/>
+</menu>

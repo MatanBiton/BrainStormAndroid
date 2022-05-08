@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BrainStormAndroid</string>
+    <string name="app_name">BrainStorm</string>
     <string name="please_wait">Please Wait...</string>
     <string name="app_logo">App Logo</string>
     <string name="sign_up_here">Sign-Up Here!</string>
@@ -103,4 +103,7 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="action_settings">Settings</string>
+    <string name="search">Search</string>
+    <string name="approve">Approve</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

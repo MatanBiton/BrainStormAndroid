@@ -63,17 +63,7 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
         android:importantForAutofill="no" />
 
-    <TextView
-        android:id="@+id/txtEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/email_must_be_a_valid_address"
-        android:textColor="@color/pink"
-        android:textSize="12sp"
-        android:layout_marginTop="5dp"
-        app:layout_constraintEnd_toEndOf="@+id/editEmail"
-        app:layout_constraintStart_toStartOf="@+id/editEmail"
-        app:layout_constraintTop_toBottomOf="@+id/editEmail" />
+
 
     <LinearLayout
         android:id="@+id/linearlay"
@@ -118,17 +108,7 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/txtPass"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/password_must_contain_8_characters"
-        android:textSize="12sp"
-        android:textColor="@color/pink"
-        android:layout_marginTop="5dp"
-        app:layout_constraintEnd_toEndOf="@+id/linearlay"
-        app:layout_constraintStart_toStartOf="@+id/linearlay"
-        app:layout_constraintTop_toBottomOf="@+id/linearlay" />
+
 
     <Button
         android:id="@+id/btnLog"

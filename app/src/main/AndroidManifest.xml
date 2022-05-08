@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.mbco.brainstormandroid" >
+    package="com.mbco.brainstormandroid">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -20,7 +20,28 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BrainStormAndroid"
         android:usesCleartextTraffic="true"
-        tools:targetApi="m" >
+        tools:targetApi="m">
+        <activity
+            android:name=".courseParticipation.CourseParticipationSummery"
+            android:exported="false" />
+        <activity
+            android:name=".courseParticipation.CourseParticipationPageView"
+            android:exported="false" />
+        <activity
+            android:name=".courseCreation.CourseCreationPageCreation"
+            android:exported="false" />
+        <activity
+            android:name=".courseCreation.CourseCreationDetails"
+            android:exported="false" />
+        <activity
+            android:name=".teacher.TeacherMainMenu"
+            android:exported="false" />
+        <activity
+            android:name=".student.StudentMainMenu"
+            android:exported="false" />
+        <activity
+            android:name=".admin.AdminMainMenu"
+            android:exported="false" />
         <activity
             android:name=".Register"
             android:exported="false" />
@@ -29,7 +50,7 @@
             android:exported="false" />
         <activity
             android:name=".SplashScreen"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

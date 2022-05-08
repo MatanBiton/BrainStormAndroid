@@ -1,6 +1,8 @@
-package com.mbco.brainstormandroid;
+package com.mbco.brainstormandroid.models;
 
 import android.graphics.Bitmap;
+
+import com.mbco.brainstormandroid.HelpFunctions;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -68,8 +70,8 @@ public class User {
         this.id = Integer.parseInt(jsonObject.getString("id"));
         this.email = jsonObject.getString("email");
         this.password = jsonObject.getString("password");
-        this.firstName = jsonObject.getString("first_name");
-        this.lastName = jsonObject.getString("last_name");
+        this.firstName = jsonObject.getString("firstname");
+        this.lastName = jsonObject.getString("lastname");
         this.photo = HelpFunctions.StringToBitMap(jsonObject.getString("photo"));
         this.address = jsonObject.getString("address");
         this.city = jsonObject.getString("city");
@@ -171,6 +173,10 @@ public class User {
         jsonObject.put("birthday", birthDay);
         jsonObject.put("user_type", userType);
         return jsonObject;
+    }
+
+    public String GetName(){
+        return firstName + " " + lastName;
     }
 
 }

@@ -1,20 +1,26 @@
 package com.mbco.brainstormandroid;
 
-import static java.lang.Compiler.enable;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.ConditionVariable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mbco.brainstormandroid.admin.AdminMainMenu;
+import com.mbco.brainstormandroid.models.User;
+import com.mbco.brainstormandroid.student.StudentMainMenu;
+import com.mbco.brainstormandroid.teacher.TeacherMainMenu;
+
 import org.json.JSONException;
+
+import java.util.regex.Pattern;
 
 public class Login extends AppCompatActivity {
 
@@ -23,6 +29,10 @@ public class Login extends AppCompatActivity {
     private EditText editEmail, editPassword;
 
     private Button btnLog;
+
+    private ImageButton btnSwitch;
+
+    private boolean IsOn;
 
     private final Requests requests = Requests.getInstance();
 
@@ -37,6 +47,7 @@ public class Login extends AppCompatActivity {
         editEmail = findViewById(R.id.editEmail);
         editPassword = findViewById(R.id.editPassword);
         btnLog = findViewById(R.id.btnLog);
+        btnSwitch = findViewById(R.id.btnSwitch);
 
 
         btnLog.setOnClickListener(new View.OnClickListener() {
@@ -45,7 +56,13 @@ public class Login extends AppCompatActivity {
                 String email = editEmail.getText().toString();
                 String password = editPassword.getText().toString();
                 enable(false);
-                new LoginThread(email, password).start();
+                if (checkInputs(email, password)){
+                    new LoginThread(email, password).start();
+                } else{
+                    enable(true);
+                    Toast.makeText(context, "Invalid Inputs!", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
@@ -56,6 +73,37 @@ public class Login extends AppCompatActivity {
                 finish();
             }
         });
+
+        KeyboardUtils.addKeyboardToggleListener(this, new KeyboardUtils.SoftKeyboardToggleListener()
+        {
+            @Override
+            public void onToggleSoftKeyboard(boolean isVisible)
+            {
+                if (!isVisible){
+                    editEmail.clearFocus();
+                    editPassword.clearFocus();
+                }
+            }
+        });
+
+        IsOn = false;
+        btnSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int pos = editPassword.getSelectionStart();
+                if(IsOn == true){
+                    IsOn = false;
+                    editPassword.setInputType(129);
+                    btnSwitch.setImageResource(R.drawable.ic_baseline_visibility_off_24);
+                }
+                else{
+                    IsOn = true;
+                    editPassword.setInputType(97);
+                    btnSwitch.setImageResource(R.drawable.ic_baseline_visibility_24);
+                }
+                editPassword.setSelection(pos);
+            }
+        });
     }
 
     public void enable(boolean enable) {
@@ -63,6 +111,20 @@ public class Login extends AppCompatActivity {
         editPassword.setEnabled(enable);
         btnLog.setEnabled(enable);
         txtSign.setEnabled(enable);
+    }
+
+    public boolean checkInputs(String email, String password){
+        if (email == null || email.isEmpty()) {
+            return false;
+        }
+        if (password == null || password.isEmpty()) {
+            return false;
+        }
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\." +"[a-zA-Z0-9_+&*-]+)*@" + "(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        Pattern emailpattern = Pattern.compile(emailRegex);
+        String passwordregex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$";
+        Pattern passwordpattern = Pattern.compile(passwordregex);
+        return passwordpattern.matcher(password).matches() && emailpattern.matcher(email).matches();
     }
 
     public class  LoginThread extends Thread{
@@ -89,7 +151,17 @@ public class Login extends AppCompatActivity {
                                     Toast.makeText(context, "error", Toast.LENGTH_SHORT).show();
                                     enable(true);
                                 } else {
-                                    startActivity(new Intent(context, SplashScreen.class));
+                                    HelpFunctions.CurrentUser = result;
+                                    Intent intent;
+                                    if (HelpFunctions.IsAdmin()) {
+                                        intent = new Intent(context, AdminMainMenu.class);
+                                    }
+                                    else if (result.getUserType().equals("student")){
+                                        intent = new Intent(context, StudentMainMenu.class);
+                                    } else{
+                                        intent = new Intent(context, TeacherMainMenu.class);
+                                    }
+                                    startActivity(intent);
                                     finish();
                                 }
                             }

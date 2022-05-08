@@ -1,11 +1,11 @@
-package com.mbco.brainstormandroid;
+package com.mbco.brainstormandroid.models;
 
 import android.graphics.Bitmap;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Teacher extends User{
+public class Teacher extends User {
 
     private String certification;
     private int experience;

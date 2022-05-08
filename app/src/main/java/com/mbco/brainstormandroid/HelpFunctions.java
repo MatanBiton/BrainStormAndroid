@@ -4,9 +4,23 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 
+import com.mbco.brainstormandroid.models.Course;
+import com.mbco.brainstormandroid.models.CourseData;
+import com.mbco.brainstormandroid.models.CourseInfo;
+import com.mbco.brainstormandroid.models.User;
+
 import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 
 public class HelpFunctions {
+
+    public static User CurrentUser;
+
+    public static CourseInfo CurrentCourseCreationInfo;
+
+    public static Course CurrentCourse;
+
+    public static CourseData CurrentCourseData;
 
     public static String BitMapToString(Bitmap bitmap) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -29,4 +43,16 @@ public class HelpFunctions {
         }
     }
 
+    public static String ByteArrToString(byte [] arr){
+        return new String(arr, StandardCharsets.UTF_8);
+    }
+
+    public static byte[] StringToByteArr(String s){
+        return s.getBytes(StandardCharsets.UTF_8);
+    }
+
+
+    public static boolean IsAdmin() {
+        return CurrentUser.getEmail().equals("matanb1905@gmail.com");
+    }
 }

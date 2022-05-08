@@ -8,19 +8,25 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Matrix;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.mbco.brainstormandroid.models.Teacher;
+import com.mbco.brainstormandroid.models.User;
+import com.mbco.brainstormandroid.student.StudentMainMenu;
+import com.mbco.brainstormandroid.teacher.TeacherMainMenu;
 
 import org.json.JSONException;
 
@@ -28,6 +34,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -46,6 +53,8 @@ public class Register extends AppCompatActivity {
 
     private Spinner spinnerCity, spinnerPhone;
 
+    private LinearLayout linearLayout;
+
     private Bitmap photoBit;
 
     private LayoutInflater inflater;
@@ -54,7 +63,7 @@ public class Register extends AppCompatActivity {
 
     private final Requests request = Requests.getInstance();
 
-    private boolean student;
+    private Boolean student;
 
     private View UserTypeView;
 
@@ -92,7 +101,9 @@ public class Register extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new RegisterThread(GetUser()).start();
+                if (checkValidInputs()){
+                    new RegisterThread(GetUser()).start();
+                }
             }
         });
 
@@ -132,6 +143,8 @@ public class Register extends AppCompatActivity {
                 editExperience.setEnabled(false);
                 btnStudent.setBackgroundColor(getResources().getColor(R.color.brightblue, getTheme()));
                 btnTeacher.setBackgroundColor(getResources().getColor(R.color.black, getTheme()));
+                btnType.setText("Student");
+                linearLayout.setVisibility(View.GONE);
             }
         });
 
@@ -143,8 +156,143 @@ public class Register extends AppCompatActivity {
                 editExperience.setEnabled(true);
                 btnStudent.setBackgroundColor(getResources().getColor(R.color.black, getTheme()));
                 btnTeacher.setBackgroundColor(getResources().getColor(R.color.brightblue, getTheme()));
+                btnType.setText("Teacher");
+                linearLayout.setVisibility(View.VISIBLE);
             }
         });
+
+        KeyboardUtils.addKeyboardToggleListener(this, new KeyboardUtils.SoftKeyboardToggleListener()
+        {
+            @Override
+            public void onToggleSoftKeyboard(boolean isVisible)
+            {
+                if (!isVisible){
+                    editEmail.clearFocus();
+                    editPassword.clearFocus();
+                    editFullName.clearFocus();
+                    editID.clearFocus();
+                    editAddress.clearFocus();
+                    editPhone.clearFocus();
+                    spinnerPhone.clearFocus();
+                    spinnerCity.clearFocus();
+                    editCertification.clearFocus();
+                    editExperience.clearFocus();
+                }
+            }
+        });
+    }
+
+    public boolean checkValidInputs(){
+        String email = editEmail.getText().toString();
+        String password = editPassword.getText().toString();
+        String name = editFullName.getText().toString();
+        String id = editID.getText().toString();
+        String address = editAddress.getText().toString();
+        String phone = spinnerPhone.getSelectedItem().toString() + editPhone.getText().toString();
+        String city = spinnerCity.getSelectedItem().toString();
+        String certificate = editCertification.getText().toString();
+        String experience = editExperience.getText().toString();
+        boolean type = student != null;
+        boolean pic = photoBit != null;
+        if (type && pic){
+            boolean Bemail = validations.emailValid(email);
+            boolean Bpassword = validations.passwordValid(password);
+            boolean Bname = validations.nameValid(name);
+            boolean Bid =       validations.idValid(id);
+            boolean Baddress =       validations.addressValid(address);
+            boolean Bphone =       validations.phoneValid(phone);
+            boolean Bcity =      validations.cityValid(city);
+            boolean Bpic =      validations.photoValid(context, photoBit);
+            boolean base = Bemail && Bpassword && Bname && Bid && Baddress && Bphone && Bcity && Bpic;
+            return student ? base : base && validations.certificateValid(certificate)
+                    && validations.experienceValid(experience);
+        }
+        return false;
+    }
+
+    public static class validations {
+        private static boolean emailValid(String email){
+            if (email == null || email.isEmpty()) {
+                return false;
+            }
+            String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\." +"[a-zA-Z0-9_+&*-]+)*@" + "(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+            Pattern pattern = Pattern.compile(emailRegex);
+            Log.println(Log.ASSERT,"email",String.valueOf(pattern.matcher(email).matches()));
+            return pattern.matcher(email).matches();
+        }
+        private static boolean passwordValid(String password){
+            if (password == null || password.isEmpty()) {
+                return false;
+            }
+            String regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$";
+            Pattern pattern = Pattern.compile(regex);
+            Log.println(Log.ASSERT,"password",String.valueOf(pattern.matcher(password).matches()));
+            return pattern.matcher(password).matches();
+        }
+        private static boolean nameValid(String name){
+            if (name == null || name.isEmpty()){
+                return false;
+            }
+            String[] parts = name.split(" ");
+            if (parts.length == 2) {
+                for (String part : parts) {
+                    String regex = ".*[a-zA-Z].";
+                    Pattern pattern = Pattern.compile(regex);
+                    if (!part.chars().allMatch(Character::isLetter)) {
+                        Log.println(Log.ASSERT,"name","false");
+                        return false;
+                    }
+                }
+            }
+            Log.println(Log.ASSERT,"name",String.valueOf(true));
+            return true;
+        }
+        private static boolean idValid(String id){
+            if (id == null || id.isEmpty()){
+                return false;
+            }
+            Log.println(Log.ASSERT,"id",String.valueOf(id.length()==9));
+            return id.length() == 9;
+        }
+        private static boolean addressValid(String address){
+            if (address == null || address.isEmpty()){
+                return false;
+            }
+            address = address.replace(" ", "");
+            Log.println(Log.ASSERT,"address",String.valueOf(!Pattern.compile("[0-9]").matcher(address).find()));
+            return !Pattern.compile("[0-9]").matcher(address).find();
+        }
+        private static boolean phoneValid(String phone){
+            if (phone == null || phone.isEmpty()){
+                return false;
+            }
+            Log.println(Log.ASSERT,"phone",String.valueOf(phone.length() == 10));
+            return phone.length() == 10;
+        }
+        private static boolean cityValid(String city){
+            if (city == null || city.isEmpty()){
+                return false;
+            }
+            Log.println(Log.ASSERT,"city",String.valueOf(!city.equals("Select Your City")));
+            return !city.equals("Select Your City");
+        }
+        private static boolean photoValid(Context context, Bitmap photo){
+            Bitmap defaultPhoto = BitmapFactory.decodeResource(context.getResources(),
+                    R.drawable.add);
+            Log.println(Log.ASSERT,"pic",String.valueOf(!defaultPhoto.sameAs(photo)));
+            return !defaultPhoto.sameAs(photo);
+        }
+        private static boolean certificateValid(String certificate){
+            if (certificate == null || certificate.isEmpty()){
+                return false;
+            }
+            Log.println(Log.ASSERT,"certification",String.valueOf(Pattern.compile(".*[a-zA-Z].").matcher(certificate).matches()));
+            return Pattern.compile(".*[a-zA-Z].").matcher(certificate).matches();
+        }
+        private static boolean experienceValid(String experience){
+            //Log.println(Log.ASSERT,"experience",String.valueOf(experience != null || experience.isEmpty()));
+            return experience != null && !experience.isEmpty();
+        }
     }
 
     @Override
@@ -204,6 +352,7 @@ public class Register extends AppCompatActivity {
         btnTeacher = UserTypeView.findViewById(R.id.btnTeacher);
         editCertification = UserTypeView.findViewById(R.id.editCertification);
         editExperience = UserTypeView.findViewById(R.id.editExperience);
+        linearLayout = UserTypeView.findViewById(R.id.linearLayout);
     }
 
     public void InitializeSpinners(){
@@ -222,7 +371,6 @@ public class Register extends AppCompatActivity {
         arrayAdapter = new ArrayAdapter<>(context, R.layout.reg_spinner_item, cities);
         spinnerCity.setAdapter(arrayAdapter);
     }
-
 
     public void initializeUserTypeDialog(){
         UserTypeView = inflater.inflate(R.layout.user_type_menu, null);
@@ -249,6 +397,12 @@ public class Register extends AppCompatActivity {
                             public void run() {
                                 if (result != null){
                                     Toast.makeText(context, "success", Toast.LENGTH_SHORT).show();
+                                    HelpFunctions.CurrentUser = result;
+                                    Intent intent = new Intent(context,
+                                            result.getUserType().equals("student")?
+                                            StudentMainMenu.class: TeacherMainMenu.class);
+                                    startActivity(intent);
+                                    finish();
                                 }else {
                                     Toast.makeText(context, "fail", Toast.LENGTH_SHORT).show();
                                 }
