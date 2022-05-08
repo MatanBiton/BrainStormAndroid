@@ -14,6 +14,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SplashScreen extends AppCompatActivity {
 
@@ -70,24 +71,20 @@ public class SplashScreen extends AppCompatActivity {
 
 
     public class TestConnection extends Thread{
-
         private final Context context;
-
         public TestConnection(Context context){
             this.context = context;
         }
-
         @Override
         public void run() {
             super.run();
-
             //starting to test the connection using an interface on callback with the answer
-
             requests.TestConnection(new RequestsResultListener<Boolean>() {
                 @Override
                 public void getResult(Boolean result) {
                     if (result) {
-                         //checking how long it has been since the animation started in order to let it finish completely
+                         //checking how long it has been since the animation
+                        // started in order to let it finish completely
                         endTime = SystemClock.elapsedRealtime();
                         long deltaTime = endTime - startTime;
                         new Handler().postDelayed(new Runnable() {
@@ -97,8 +94,10 @@ public class SplashScreen extends AppCompatActivity {
                                 finish();
                             }
                         }, deltaTime < 3000 ? 3000 - deltaTime : 0);
-                    } else{
-                        //show Connection error
+                    } else{ //show Connection error
+                        Toast.makeText(context, "connection error, " +
+                                "try again!", Toast.LENGTH_SHORT).show();
+
                     }
                 }
             });

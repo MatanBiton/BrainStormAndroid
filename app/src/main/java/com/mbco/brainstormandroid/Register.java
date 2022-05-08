@@ -116,7 +116,8 @@ public class Register extends AppCompatActivity {
                 int curMonth = calendar.get(Calendar.MONTH);
                 int curDay = calendar.get(Calendar.DAY_OF_MONTH);
 
-                datePickerDialog = new DatePickerDialog(context, AlertDialog.THEME_HOLO_LIGHT, new DatePickerDialog.OnDateSetListener() {
+                datePickerDialog = new DatePickerDialog(context, AlertDialog.THEME_HOLO_LIGHT,
+                        new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         String date = dayOfMonth + "/" + (month+1) + "/" + year;
