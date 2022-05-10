@@ -3,6 +3,7 @@ package com.mbco.brainstormandroid;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
@@ -69,6 +70,8 @@ public class Register extends AppCompatActivity {
 
     private AlertDialog userTypeDialog;
 
+    private Activity activity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,6 +105,7 @@ public class Register extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (checkValidInputs()){
+                    HelpFunctions.ShowWaitDialog(context, activity);
                     new RegisterThread(GetUser()).start();
                 }
             }
@@ -354,6 +358,7 @@ public class Register extends AppCompatActivity {
         editCertification = UserTypeView.findViewById(R.id.editCertification);
         editExperience = UserTypeView.findViewById(R.id.editExperience);
         linearLayout = UserTypeView.findViewById(R.id.linearLayout);
+        activity = this;
     }
 
     public void InitializeSpinners(){
@@ -402,10 +407,12 @@ public class Register extends AppCompatActivity {
                                     Intent intent = new Intent(context,
                                             result.getUserType().equals("student")?
                                             StudentMainMenu.class: TeacherMainMenu.class);
+                                    HelpFunctions.CancelWaitDialog();
                                     startActivity(intent);
                                     finish();
                                 }else {
                                     Toast.makeText(context, "fail", Toast.LENGTH_SHORT).show();
+                                    HelpFunctions.CancelWaitDialog();
                                 }
                             }
                         });
@@ -413,6 +420,7 @@ public class Register extends AppCompatActivity {
                 });
             } catch (JSONException e) {
                 e.printStackTrace();
+                HelpFunctions.CancelWaitDialog();
             }
         }
 

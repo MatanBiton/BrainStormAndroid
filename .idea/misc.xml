@@ -26,11 +26,14 @@
         <entry key="..\:/BrainStormAndroid/app/src/main/res/layout/activity_login.xml" value="0.18645833333333334" />
         <entry key="..\:/BrainStormAndroid/app/src/main/res/layout/activity_register.xml" value="0.25" />
         <entry key="..\:/BrainStormAndroid/app/src/main/res/layout/activity_student_main_menu.xml" value="0.18645833333333334" />
+        <entry key="..\:/BrainStormAndroid/app/src/main/res/layout/activity_student_update.xml" value="0.25" />
         <entry key="..\:/BrainStormAndroid/app/src/main/res/layout/activity_teacher_main_menu.xml" value="0.17239583333333333" />
         <entry key="..\:/BrainStormAndroid/app/src/main/res/layout/admin_filter_dialog.xml" value="0.18645833333333334" />
         <entry key="..\:/BrainStormAndroid/app/src/main/res/layout/back_unsave_dialog.xml" value="0.18645833333333334" />
         <entry key="..\:/BrainStormAndroid/app/src/main/res/layout/content_scrolling.xml" value="0.18645833333333334" />
+        <entry key="..\:/BrainStormAndroid/app/src/main/res/layout/course_info_dialog.xml" value="0.18645833333333334" />
         <entry key="..\:/BrainStormAndroid/app/src/main/res/layout/course_list_selection_template.xml" value="0.18645833333333334" />
+        <entry key="..\:/BrainStormAndroid/app/src/main/res/layout/course_review_template.xml" value="0.22" />
         <entry key="..\:/BrainStormAndroid/app/src/main/res/layout/create_course_confirmation_dialog.xml" value="0.18645833333333334" />
         <entry key="..\:/BrainStormAndroid/app/src/main/res/layout/create_page_dialog.xml" value="0.18645833333333334" />
         <entry key="..\:/BrainStormAndroid/app/src/main/res/layout/finished_students_dialog.xml" value="0.18645833333333334" />
@@ -43,20 +46,24 @@
         <entry key="..\:/BrainStormAndroid/app/src/main/res/layout/fragment_teacher_profile.xml" value="0.17239583333333333" />
         <entry key="..\:/BrainStormAndroid/app/src/main/res/layout/fragment_teacher_search.xml" value="0.18645833333333334" />
         <entry key="..\:/BrainStormAndroid/app/src/main/res/layout/grade_dialog.xml" value="0.3333333333333333" />
+        <entry key="..\:/BrainStormAndroid/app/src/main/res/layout/loading_dialog.xml" value="0.33" />
         <entry key="..\:/BrainStormAndroid/app/src/main/res/layout/my_course_tab.xml" value="0.18645833333333334" />
         <entry key="..\:/BrainStormAndroid/app/src/main/res/layout/page_list_template.xml" value="0.18645833333333334" />
         <entry key="..\:/BrainStormAndroid/app/src/main/res/layout/profile_dialog.xml" value="0.18645833333333334" />
+        <entry key="..\:/BrainStormAndroid/app/src/main/res/layout/report_dialog.xml" value="0.18645833333333334" />
         <entry key="..\:/BrainStormAndroid/app/src/main/res/layout/request_approve_template.xml" value="0.22" />
         <entry key="..\:/BrainStormAndroid/app/src/main/res/layout/request_teacher_profile.xml" value="0.18645833333333334" />
         <entry key="..\:/BrainStormAndroid/app/src/main/res/layout/return_from_course_creation_dialog.xml" value="0.18645833333333334" />
+        <entry key="..\:/BrainStormAndroid/app/src/main/res/layout/return_home_dialog.xml" value="0.18645833333333334" />
         <entry key="..\:/BrainStormAndroid/app/src/main/res/layout/review_dialog_template.xml" value="0.18645833333333334" />
         <entry key="..\:/BrainStormAndroid/app/src/main/res/layout/review_grid_template.xml" value="0.18645833333333334" />
         <entry key="..\:/BrainStormAndroid/app/src/main/res/layout/save_dialog.xml" value="0.18645833333333334" />
         <entry key="..\:/BrainStormAndroid/app/src/main/res/layout/splash_screen.xml" value="0.18645833333333334" />
-        <entry key="..\:/BrainStormAndroid/app/src/main/res/layout/student_add_courses_dialog.xml" value="0.3333333333333333" />
+        <entry key="..\:/BrainStormAndroid/app/src/main/res/layout/student_add_courses_dialog.xml" value="0.22" />
         <entry key="..\:/BrainStormAndroid/app/src/main/res/layout/student_filter_dialog.xml" value="0.18645833333333334" />
         <entry key="..\:/BrainStormAndroid/app/src/main/res/layout/student_grade_list_template.xml" value="0.25" />
         <entry key="..\:/BrainStormAndroid/app/src/main/res/layout/teacher_course_grid_dialog.xml" value="0.18645833333333334" />
+        <entry key="..\:/BrainStormAndroid/app/src/main/res/layout/teacher_course_info_dialog.xml" value="0.22" />
         <entry key="..\:/BrainStormAndroid/app/src/main/res/layout/teacher_course_list_template.xml" value="0.18645833333333334" />
         <entry key="..\:/BrainStormAndroid/app/src/main/res/layout/user_search_card.xml" value="0.18645833333333334" />
         <entry key="..\:/BrainStormAndroid/app/src/main/res/layout/user_type_menu.xml" value="0.18645833333333334" />

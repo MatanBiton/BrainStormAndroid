@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="7dp">
+
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="Compose Email describing&#10;your "
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editSubject"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:hint="Enter subject of topic"
+        android:maxLines="1"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/textView20"
+        app:layout_constraintStart_toStartOf="@+id/textView20"
+        app:layout_constraintTop_toBottomOf="@+id/textView20" />
+
+
+    <EditText
+        android:id="@+id/editBody"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:hint="enter your report"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/editSubject"
+        app:layout_constraintStart_toStartOf="@+id/editSubject"
+        app:layout_constraintTop_toBottomOf="@+id/editSubject" />
+
+    <Button
+        android:id="@+id/btnCompose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="compose"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/editBody"
+        app:layout_constraintStart_toStartOf="@+id/editBody"
+        app:layout_constraintTop_toBottomOf="@+id/editBody" />
+</androidx.constraintlayout.widget.ConstraintLayout>

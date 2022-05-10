@@ -179,4 +179,12 @@ public class User {
         return firstName + " " + lastName;
     }
 
+    public boolean Compare(User user){
+        return this.UID.equals(user.UID) && id == user.id && email.equals(user.email) &&
+                password.equals(user.password) && firstName.equals(user.firstName) &&
+                lastName.equals(user.lastName) && photo.sameAs(user.photo) &&
+                address.equals(user.address) && city.equals(user.city) &&
+                phone.equals(user.phone) && birthDay.equals(user.birthDay) &&
+                userType.equals(user.userType);
+    }
 }

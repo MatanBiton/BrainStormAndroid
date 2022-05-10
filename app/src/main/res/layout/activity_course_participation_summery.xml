@@ -23,10 +23,10 @@
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="17dp"
-        android:hint="enter your review of the course"
+        android:hint="add a comment"
         android:textSize="20sp"
         android:layout_marginTop="40dp"
-        android:maxLength="75"
+        android:maxLength="20"
         app:layout_constraintEnd_toEndOf="@+id/txtTitle"
         app:layout_constraintStart_toStartOf="@+id/txtTitle"
         app:layout_constraintTop_toBottomOf="@+id/txtTitle" />

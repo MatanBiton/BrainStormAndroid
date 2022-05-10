@@ -8,6 +8,7 @@ public class CourseReview {
     private String studentUid;
     private int rating;
     private String comment;
+    private User student;
 
     public CourseReview(String courseUid, String studentUid, int rating, String comment) {
         this.courseUid = courseUid;
@@ -53,5 +54,13 @@ public class CourseReview {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public User getStudent() {
+        return student;
+    }
+
+    public void setStudent(User student) {
+        this.student = student;
     }
 }

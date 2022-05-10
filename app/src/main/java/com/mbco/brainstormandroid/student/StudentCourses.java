@@ -67,6 +67,7 @@ public class StudentCourses extends Fragment {
                 availableCourseListView = view.findViewById(R.id.availableCourseListView);
                 btnCancelAdd = view.findViewById(R.id.btnCancelAdd);
                 btnAddNewCourses = view.findViewById(R.id.btnAddNewCourses);
+                TextView txtMsg = view.findViewById(R.id.txtMsg);
 
                 btnCancelAdd.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -89,6 +90,9 @@ public class StudentCourses extends Fragment {
                 });
 
                 ArrayList<Course> temp = RemoveFromAll();
+
+                txtMsg.setVisibility(temp.size()>0?View.GONE: View.VISIBLE);
+                btnAddNewCourses.setEnabled(temp.size()>0);
 
                 adapter = new CourseSelectionAdapter(temp, context);
                 availableCourseListView.setAdapter(adapter);

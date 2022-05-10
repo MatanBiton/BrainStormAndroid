@@ -1,5 +1,6 @@
 package com.mbco.brainstormandroid.teacher;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -12,7 +13,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mbco.brainstormandroid.R;
 import com.mbco.brainstormandroid.Requests;
@@ -51,11 +55,19 @@ public class TeacherSearch extends Fragment {
 
     private final Fragment fragment = this;
 
+    private Activity activity;
+
+    private TextView txtMsg;
+
+    private ProgressBar progressBar;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         rootView = inflater.inflate(R.layout.fragment_teacher_search, container, false);
+
+        activity = getActivity();
 
         Initialize();
 
@@ -123,12 +135,15 @@ public class TeacherSearch extends Fragment {
                     filterValue = "NONE";
                 }
                 if (filterValue.equals("NONE") && !filter.equals("NONE")){
-                    //error
+                    Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
                 }
                 else if (!filterValue.equals("NONE") && filter.equals("NONE")){
-                    //error
+                    Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
                 }
                 else{
+                    listView.setVisibility(View.GONE);
+                    txtMsg.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.VISIBLE);
                     new LoadStudents().start();
                 }
             }
@@ -153,6 +168,8 @@ public class TeacherSearch extends Fragment {
         btnSearch = rootView.findViewById(R.id.btnSearch);
         btnFilter = rootView.findViewById(R.id.btnFilter);
         listView = rootView.findViewById(R.id.listView);
+        txtMsg = rootView.findViewById(R.id.txtMsg);
+        progressBar = rootView.findViewById(R.id.progressBar);
     }
 
     public class LoadStudents extends Thread{
@@ -165,16 +182,24 @@ public class TeacherSearch extends Fragment {
                     public void getResult(ArrayList<User> result) {
                         if (result != null) {
                             users = result;
-                            SearchUsersAdapter searchAdapter = new SearchUsersAdapter(users, fragment, context);
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    listView.setAdapter(searchAdapter);
-                                    listView.setVisibility(View.VISIBLE);
-                                }
-                            });
+                            if (users.size() > 0) {
+                                SearchUsersAdapter searchAdapter = new SearchUsersAdapter(users, fragment, context);
+                                activity.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        listView.setAdapter(searchAdapter);
+                                        listView.setVisibility(View.VISIBLE);
+                                        txtMsg.setVisibility(View.GONE);
+                                        progressBar.setVisibility(View.GONE);
+                                    }
+                                });
+                            } else {
+                                listView.setVisibility(View.GONE);
+                                txtMsg.setVisibility(View.VISIBLE);
+                                progressBar.setVisibility(View.GONE);
+                            }
                         } else {
-                            //error
+                            Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

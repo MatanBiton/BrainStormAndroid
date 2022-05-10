@@ -16,8 +16,12 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.mbco.brainstormandroid.KeyboardUtils;
 import com.mbco.brainstormandroid.R;
 import com.mbco.brainstormandroid.Requests;
 import com.mbco.brainstormandroid.RequestsResultListener;
@@ -55,6 +59,10 @@ public class AdminSearch extends Fragment {
     private final Fragment fragment = this;
 
     private Activity thisActivity;
+
+    private ProgressBar progressBar;
+
+    private TextView txtMsg;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -198,13 +206,27 @@ public class AdminSearch extends Fragment {
                     filterValue = "NONE";
                 }
                 if (filter.equals("NONE") && !filterValue.equals("NONE")){
-                    //error
+                    Toast.makeText(ctx, "Error", Toast.LENGTH_SHORT).show();
                 }
                 else if (!filter.equals("NONE") && filterValue.equals("NONE")){
-                    //error
+                    Toast.makeText(ctx, "Error", Toast.LENGTH_SHORT).show();
                 }
                 else{
+                    listView.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.VISIBLE);
+                    txtMsg.setVisibility(View.GONE);
                     new LoadUsers().start();
+                }
+            }
+        });
+
+        KeyboardUtils.addKeyboardToggleListener(thisActivity, new KeyboardUtils.SoftKeyboardToggleListener()
+        {
+            @Override
+            public void onToggleSoftKeyboard(boolean isVisible)
+            {
+                if (!isVisible){
+                    editSearch.clearFocus();
                 }
             }
         });
@@ -229,6 +251,8 @@ public class AdminSearch extends Fragment {
         btnSearch = rootView.findViewById(R.id.btnSearch);
         btnFilter = rootView.findViewById(R.id.btnFilter);
         listView = rootView.findViewById(R.id.listView);
+        progressBar = rootView.findViewById(R.id.progressBar);
+        txtMsg = rootView.findViewById(R.id.txtMsg);
     }
 
     public class LoadUsers extends Thread{
@@ -241,16 +265,24 @@ public class AdminSearch extends Fragment {
                     public void getResult(ArrayList<User> result) {
                         if (result != null) {
                             users = result;
-                            SearchUsersAdapter searchAdapter = new SearchUsersAdapter(users, fragment, ctx);
-                            thisActivity.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    listView.setAdapter(searchAdapter);
-                                    listView.setVisibility(View.VISIBLE);
-                                }
-                            });
+                            if (result.size() > 0) {
+                                SearchUsersAdapter searchAdapter = new SearchUsersAdapter(users, fragment, ctx);
+                                thisActivity.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        progressBar.setVisibility(View.GONE);
+                                        txtMsg.setVisibility(View.GONE);
+                                        listView.setAdapter(searchAdapter);
+                                        listView.setVisibility(View.VISIBLE);
+                                    }
+                                });
+                            } else{
+                                progressBar.setVisibility(View.GONE);
+                                listView.setVisibility(View.GONE);
+                                txtMsg.setVisibility(View.VISIBLE);
+                            }
                         } else {
-                            //error
+                            Toast.makeText(ctx, "Error", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

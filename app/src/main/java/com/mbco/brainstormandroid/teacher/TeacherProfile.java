@@ -131,7 +131,7 @@ public class TeacherProfile extends Fragment {
                     courseInfos = result;
                     CoursesGridAdapter adapter = new CoursesGridAdapter(courseInfos, fragment);
                     gridView.setAdapter(adapter);
-                    txtMsg.setVisibility(courseInfos.size() > 1 ? View.GONE : View.VISIBLE);
+                    txtMsg.setVisibility(courseInfos.size() > 0 ? View.GONE : View.VISIBLE);
                 }
             });
         }

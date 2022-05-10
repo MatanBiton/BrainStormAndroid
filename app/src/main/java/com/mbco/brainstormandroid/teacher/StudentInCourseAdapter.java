@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import com.mbco.brainstormandroid.R;
 import com.mbco.brainstormandroid.Requests;
 import com.mbco.brainstormandroid.RequestsResultListener;
+import com.mbco.brainstormandroid.models.StudentInCourse;
 import com.mbco.brainstormandroid.models.StudentsCourseInfo;
 import com.mbco.brainstormandroid.models.Teacher;
 import com.mbco.brainstormandroid.models.User;
@@ -37,10 +38,18 @@ public class StudentInCourseAdapter extends BaseAdapter {
     private Context context;
 
     public StudentInCourseAdapter(Fragment fragment, StudentsCourseInfo courseInfo, ArrayList<User> users, Context context) {
-        this.users =users;
         this.fragment = fragment;
         this.courseInfo = courseInfo;
         this.context = context;
+        ArrayList<User> finalUsers = new ArrayList<>();
+        for (User user: users){
+            for (StudentInCourse student: courseInfo.getStudents()){
+                if (user.getUID().equals(student.getStudentUid())){
+                    finalUsers.add(user);
+                }
+            }
+        }
+        this.users = finalUsers;
     }
 
     @Override
@@ -62,13 +71,16 @@ public class StudentInCourseAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         View v = fragment.getLayoutInflater().inflate(R.layout.student_grade_list_template, null);
 
+
+
         CircleImageView imgProfile = v.findViewById(R.id.imgProfile);
         TextView txtName = v.findViewById(R.id.txtName);
         TextView txtGrade = v.findViewById(R.id.txtGrade);
 
         imgProfile.setImageBitmap(users.get(i).getPhoto());
         txtName.setText(users.get(i).GetName());
-        txtGrade.setText("Grade: " + courseInfo.getStudents().get(i).getGrade());
+        txtGrade.setText("Grade: " +
+                String.valueOf(Math.round(courseInfo.getStudents().get(i).getGrade())));
 
         return v;
     }

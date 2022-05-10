@@ -22,18 +22,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <Button
-            android:id="@+id/btnProfile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="47dp"
-            android:backgroundTint="@color/gray"
-            android:text="Edit profile"
-            android:textColor="@color/light_extremely_gray"
-            app:layout_constraintStart_toEndOf="@+id/txtAuther"
-            app:layout_constraintTop_toTopOf="parent" />
-
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/circleImageView"

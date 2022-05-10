@@ -1,5 +1,6 @@
 package com.mbco.brainstormandroid.student;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,10 +10,17 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mbco.brainstormandroid.R;
+import com.mbco.brainstormandroid.Requests;
+import com.mbco.brainstormandroid.RequestsResultListener;
 import com.mbco.brainstormandroid.models.Course;
+import com.mbco.brainstormandroid.models.CourseReview;
+import com.mbco.brainstormandroid.teacher.TeacherCoursesAdapter;
+import com.mbco.brainstormandroid.teacher.TeacherReviewAdapter;
 
 import java.util.ArrayList;
 
@@ -23,12 +31,19 @@ public class CourseSelectionAdapter extends BaseAdapter {
     private ArrayList<Course> courses;
 
     private ArrayList<String> selectedCoursesUid;
+
     private Context context;
+
+    private ArrayList<ArrayList<CourseReview>> reviews;
 
     public CourseSelectionAdapter(ArrayList<Course> courses, Context context){
         this.courses = courses;
         this.context = context;
         this.selectedCoursesUid = new ArrayList<>();
+        reviews = new ArrayList<>();
+        for (Course course: courses){
+            new LoadReviews(course.getInfo().getUID()).start();
+        }
     }
 
     @Override
@@ -65,7 +80,33 @@ public class CourseSelectionAdapter extends BaseAdapter {
         btnInformation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                try {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
+                    View dialogView = inflater.inflate(R.layout.teacher_course_info_dialog, null);
+
+                    CircleImageView imgCourseLogo = dialogView.findViewById(R.id.imgCourseLogo);
+                    imgCourseLogo.setImageBitmap(course.getInfo().getLogo());
+
+                    TextView txtCourseTitle = dialogView.findViewById(R.id.txtCourseTitle);
+                    txtCourseTitle.setText(course.getInfo().getName());
+
+                    TextView txtField = dialogView.findViewById(R.id.txtField);
+                    txtField.setText(course.getInfo().getField());
+
+                    TextView txtDescription = dialogView.findViewById(R.id.txtDescription);
+                    txtDescription.setText(course.getInfo().getDescription());
+
+                    ListView dialogListView = dialogView.findViewById(R.id.listView);
+                    TeacherReviewAdapter adapter = new TeacherReviewAdapter(reviews.get(i), context);
+                    dialogListView.setAdapter(adapter);
+
+
+                    builder.setView(dialogView);
+                    builder.create().show();
+                } catch (Exception e){
+                    Toast.makeText(context, "Please wait", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -88,4 +129,21 @@ public class CourseSelectionAdapter extends BaseAdapter {
     }
 
     public ArrayList<String> getSelectedCoursesUid(){return selectedCoursesUid;}
+
+    public class LoadReviews extends Thread{
+        private String courseUid;
+
+        public LoadReviews(String courseUid){this.courseUid = courseUid;}
+
+        @Override
+        public void run() {
+            super.run();
+            Requests.GetReviewsTeacher(courseUid, new RequestsResultListener<ArrayList<CourseReview>>(){
+                @Override
+                public void getResult(ArrayList<CourseReview> result) {
+                    reviews.add(result);
+                }
+            });
+        }
+    }
 }

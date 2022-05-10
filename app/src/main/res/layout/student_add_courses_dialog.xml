@@ -15,10 +15,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/txtMsg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No new courses availiable"
+        android:textSize="20sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/availableCourseListView"
+        app:layout_constraintEnd_toEndOf="@+id/availableCourseListView"
+        app:layout_constraintStart_toStartOf="@+id/availableCourseListView"
+        app:layout_constraintTop_toTopOf="@+id/availableCourseListView" />
+
     <ListView
         android:id="@+id/availableCourseListView"
         android:layout_width="match_parent"
-        android:layout_height="450dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:maxHeight="450dp"
         app:layout_constraintEnd_toEndOf="parent"

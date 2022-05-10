@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.media.MediaPlayer;
 import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,6 +29,8 @@ public class SplashScreen extends AppCompatActivity {
 
     private Context context;
 
+    private MediaPlayer mediaPlayer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +40,9 @@ public class SplashScreen extends AppCompatActivity {
         requests = Requests.getInstance(this);
 
         context = this;
+
+        mediaPlayer = MediaPlayer.create(context, R.raw.loading_sound);
+        mediaPlayer.start();
 
         //verifying that the device has all of the needed permissions
         new Permission(this).verifyPermissions();
@@ -90,6 +96,7 @@ public class SplashScreen extends AppCompatActivity {
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
+                                mediaPlayer.release();
                                 startActivity(new Intent(context, Login.class));
                                 finish();
                             }

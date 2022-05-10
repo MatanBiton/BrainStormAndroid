@@ -2,6 +2,8 @@ package com.mbco.brainstormandroid.student;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,7 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +49,10 @@ public class StudentProfile extends Fragment {
 
     private ArrayList<CourseReview> coursesReviews;
 
+    private Button btnProfile;
+
+    private ImageButton btnReport;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -58,7 +67,7 @@ public class StudentProfile extends Fragment {
         new LoadReviews(HelpFunctions.CurrentUser.getUID()).start();
 
 
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        /*gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 CourseInfo info = coursesInfo.get(i);
@@ -68,9 +77,65 @@ public class StudentProfile extends Fragment {
 
                 View v = getLayoutInflater().inflate(R.layout.review_dialog_template, null);
             }
+        });*/
+
+        btnProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, StudentUpdate.class);
+                startActivity(intent);
+                getActivity().finish();
+            }
+        });
+
+        btnReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+                View v = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).
+                        inflate(R.layout.report_dialog, container, false);
+
+                builder.setView(v);
+
+                AlertDialog reportDialog = builder.create();
+
+                EditText editSubject = v.findViewById(R.id.editSubject);
+                EditText editBody = v.findViewById(R.id.editBody);
+
+                Button btnCompose = v.findViewById(R.id.btnCompose);
+                btnCompose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String subject = editSubject.getText().toString();
+                        String body = editBody.getText().toString();
+                        if(!subject.isEmpty() && !body.isEmpty()){
+                            ComposeEmail(subject, body);
+                            reportDialog.cancel();
+                        } else{
+                            Toast.makeText(context, "must enter valid inputs!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                reportDialog.show();
+            }
         });
 
         return rootView;
+    }
+
+    private void ComposeEmail(String subject, String body) {
+        String[] addresses = new String[1];
+        addresses[0] = "matanb1905@gmail.com";
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:")); // only email apps should handle this
+        intent.putExtra(Intent.EXTRA_EMAIL, addresses);
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        intent.putExtra(Intent.EXTRA_TEXT, body);
+        if (intent.resolveActivity(context.getPackageManager()) != null) {
+            startActivity(intent);
+        }
     }
 
     public void Initialize(){
@@ -81,6 +146,8 @@ public class StudentProfile extends Fragment {
         circleImageView = rootView.findViewById(R.id.circleImageView);
         txtMsg = rootView.findViewById(R.id.txtMsg);
         gridView = rootView.findViewById(R.id.gridView);
+        btnProfile = rootView.findViewById(R.id.btnProfile);
+        btnReport = rootView.findViewById(R.id.btnReport);
 
         context = getContext();
         fragment = this;

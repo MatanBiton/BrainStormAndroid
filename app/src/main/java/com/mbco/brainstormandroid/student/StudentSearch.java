@@ -13,7 +13,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mbco.brainstormandroid.R;
 import com.mbco.brainstormandroid.Requests;
@@ -53,6 +56,10 @@ public class StudentSearch extends Fragment {
     private final Fragment fragment = this;
 
     private Activity thisActivity;
+
+    private TextView txtMsg;
+
+    private ProgressBar progressBar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -128,12 +135,15 @@ public class StudentSearch extends Fragment {
                     filterValue = "NONE";
                 }
                 if (filterValue.equals("NONE") && !filter.equals("NONE")){
-                    //error
+                    Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
                 }
                 else if (!filterValue.equals("NONE") && filter.equals("NONE")){
-                    //error
+                    Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
                 }
                 else{
+                    listView.setVisibility(View.GONE);
+                    txtMsg.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.VISIBLE);
                     new LoadTeachers().start();
                 }
             }
@@ -158,6 +168,8 @@ public class StudentSearch extends Fragment {
         btnSearch = rootView.findViewById(R.id.btnSearch);
         btnFilter = rootView.findViewById(R.id.btnFilter);
         listView = rootView.findViewById(R.id.listView);
+        progressBar = rootView.findViewById(R.id.progressBar);
+        txtMsg = rootView.findViewById(R.id.txtMsg);
     }
 
     public class LoadTeachers extends Thread{
@@ -170,16 +182,24 @@ public class StudentSearch extends Fragment {
                     public void getResult(ArrayList<User> result) {
                         if (result != null) {
                             users = result;
-                            SearchUsersAdapter searchAdapter = new SearchUsersAdapter(users, fragment, context);
-                            thisActivity.runOnUiThread(new Runnable() {
+                            if (users.size() > 0) {
+                                SearchUsersAdapter searchAdapter = new SearchUsersAdapter(users, fragment, context);
+                                thisActivity.runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
                                         listView.setAdapter(searchAdapter);
                                         listView.setVisibility(View.VISIBLE);
+                                        progressBar.setVisibility(View.GONE);
+                                        txtMsg.setVisibility(View.GONE);
                                     }
                                 });
+                            } else{
+                                progressBar.setVisibility(View.GONE);
+                                txtMsg.setVisibility(View.VISIBLE);
+                                listView.setVisibility(View.GONE);
+                            }
                         } else {
-                            //error
+                            Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

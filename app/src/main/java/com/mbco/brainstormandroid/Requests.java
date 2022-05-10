@@ -510,6 +510,66 @@ public class Requests {
         queue.add(request);
     }
 
+    public static void UpdateUser(User newUser, RequestsResultListener<Boolean> listener) throws JSONException{
+        String url = BASE_URL + "update-user";
+        JSONObject body = new JSONObject();
+        body.put("user", newUser.getJSONObject());
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, body, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    listener.getResult(response.getString("msg").equals("success"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    listener.getResult(false);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                listener.getResult(false);
+            }
+        });
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                10000000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(request);
+    }
+
+    public static void GetReviewsTeacher(String courseUid, RequestsResultListener<ArrayList<CourseReview>> listener) {
+        String url = BASE_URL + "get-reviews-teacher/" + courseUid;
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONArray reviewsJson = response.getJSONArray("reviews");
+                    JSONArray usersJson = response.getJSONArray("users");
+                    ArrayList<CourseReview> reviews = new ArrayList<>();
+                    for (int i = 0; i < reviewsJson.length(); i++) {
+                        CourseReview review = new CourseReview(reviewsJson.getJSONObject(i));
+                        User user = new User(usersJson.getJSONObject(i));
+                        review.setStudent(user);
+                        reviews.add(review);
+                    }
+                    listener.getResult(reviews);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                10000000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(request);
+    }
+
 
     //this function checks if the device can get data to and from the api
     public void TestConnection(RequestsResultListener<Boolean> listener){

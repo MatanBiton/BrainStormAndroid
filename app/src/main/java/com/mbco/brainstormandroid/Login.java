@@ -1,7 +1,9 @@
 package com.mbco.brainstormandroid;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -38,6 +40,8 @@ public class Login extends AppCompatActivity {
 
     private final Context context = this;
 
+    private final Activity activity = this;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,12 +57,15 @@ public class Login extends AppCompatActivity {
         btnLog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                HelpFunctions.ShowWaitDialog(context, activity);
                 String email = editEmail.getText().toString();
                 String password = editPassword.getText().toString();
                 enable(false);
                 if (checkInputs(email, password)){
+
                     new LoginThread(email, password).start();
                 } else{
+                    HelpFunctions.CancelWaitDialog();
                     enable(true);
                     Toast.makeText(context, "Invalid Inputs!", Toast.LENGTH_SHORT).show();
                 }
@@ -148,6 +155,7 @@ public class Login extends AppCompatActivity {
                             @Override
                             public void run() {
                                 if (result == null){
+                                    HelpFunctions.CancelWaitDialog();
                                     Toast.makeText(context, "error", Toast.LENGTH_SHORT).show();
                                     enable(true);
                                 } else {
@@ -161,6 +169,7 @@ public class Login extends AppCompatActivity {
                                     } else{
                                         intent = new Intent(context, TeacherMainMenu.class);
                                     }
+                                    HelpFunctions.CancelWaitDialog();
                                     startActivity(intent);
                                     finish();
                                 }

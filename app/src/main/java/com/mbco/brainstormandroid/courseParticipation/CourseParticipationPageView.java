@@ -25,6 +25,7 @@ import com.mbco.brainstormandroid.models.CourseAddOn;
 import com.mbco.brainstormandroid.models.CourseData;
 import com.mbco.brainstormandroid.models.Page;
 import com.mbco.brainstormandroid.models.StudentAdvancing;
+import com.mbco.brainstormandroid.student.StudentMainMenu;
 
 import org.json.JSONException;
 
@@ -38,7 +39,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CourseParticipationPageView extends AppCompatActivity {
 
-    private TextView txtCourseName, txtPageTitle, txtPageBody, txtMsg, txtClear, txtBack, txtNext;
+    private TextView txtCourseName, txtPageTitle, txtPageBody, txtMsg, txtClear, txtBack, txtNext, txtReturn;
 
     private Button btnUpload, btnContinue, btnReturn;
 
@@ -118,7 +119,7 @@ public class CourseParticipationPageView extends AppCompatActivity {
                                                         pageStack.size(), "", inputData);
                                                 ;
                                                 StudentAdvancing advancing = new StudentAdvancing(course.getInfo().getUID(),
-                                                        HelpFunctions.CurrentUser.getUID(), pageStack.size(), -1);
+                                                        HelpFunctions.CurrentUser.getUID(), pageStack.size(), 100);
                                                 courseData.AddAddOn(addOn);
                                                 courseData.AddAdvancing(advancing);
                                             }
@@ -153,7 +154,7 @@ public class CourseParticipationPageView extends AppCompatActivity {
                         new SaveCourseData().start();
                     } else{
                         StudentAdvancing advancing = new StudentAdvancing(course.getInfo().getUID(),
-                                HelpFunctions.CurrentUser.getUID(), pageStack.size(), -1);
+                                HelpFunctions.CurrentUser.getUID(), pageStack.size(), 100);
                         courseData.AddAdvancing(advancing);
                         pageStack.add(course.getPages().get(pageStack.size()));
                         ShowData();
@@ -168,6 +169,42 @@ public class CourseParticipationPageView extends AppCompatActivity {
                 fileUri = null;
                 pageStack.pop();
                 ShowData();
+            }
+        });
+
+        txtReturn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+                View v = getLayoutInflater().inflate(R.layout.return_home_dialog, null);
+
+                builder.setView(v);
+
+                AlertDialog dialog = builder.create();
+
+                Button btnApprove = v.findViewById(R.id.btnApprove);
+                Button btnReject = v.findViewById(R.id.btnReject);
+
+                btnApprove.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(context, StudentMainMenu.class);
+                        dialog.cancel();
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+
+                btnReject.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.cancel();
+                    }
+                });
+
+                dialog.show();
+
             }
         });
 
@@ -242,6 +279,7 @@ public class CourseParticipationPageView extends AppCompatActivity {
         txtNext = findViewById(R.id.txtNext);
         btnUpload = findViewById(R.id.btnUpload);
         imgCourseLogo = findViewById(R.id.imgCourseLogo);
+        txtReturn = findViewById(R.id.txtReturn);
 
         context = this;
 

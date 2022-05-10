@@ -59,7 +59,7 @@ public class CourseParticipationSummery extends AppCompatActivity {
             super.run();
             try {
                 Requests.LeaveReview(HelpFunctions.CurrentCourse.getInfo().getUID(),
-                        HelpFunctions.CurrentUser.getUID(), ratingBar.getNumStars(),
+                        HelpFunctions.CurrentUser.getUID(), Math.round(ratingBar.getRating()),
                         editComment.getText().toString(), new RequestsResultListener<Boolean>(){
                             @Override
                             public void getResult(Boolean result) {

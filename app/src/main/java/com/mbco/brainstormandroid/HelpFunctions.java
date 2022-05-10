@@ -1,8 +1,12 @@
 package com.mbco.brainstormandroid;
 
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
+
+import androidx.appcompat.app.AlertDialog;
 
 import com.mbco.brainstormandroid.models.Course;
 import com.mbco.brainstormandroid.models.CourseData;
@@ -21,6 +25,8 @@ public class HelpFunctions {
     public static Course CurrentCourse;
 
     public static CourseData CurrentCourseData;
+
+    private static AlertDialog loadDialog;
 
     public static String BitMapToString(Bitmap bitmap) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -54,5 +60,16 @@ public class HelpFunctions {
 
     public static boolean IsAdmin() {
         return CurrentUser.getEmail().equals("matanb1905@gmail.com");
+    }
+
+    public static void ShowWaitDialog(Context context, Activity activity){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setView(activity.getLayoutInflater().inflate(R.layout.loading_dialog, null));
+        loadDialog = builder.create();
+        loadDialog.show();
+    }
+
+    public static void CancelWaitDialog(){
+        loadDialog.cancel();
     }
 }
